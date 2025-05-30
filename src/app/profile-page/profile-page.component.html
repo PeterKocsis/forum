@@ -39,3 +39,24 @@
     }
     <button [disabled]="changePasswordForm.dirty && changePasswordForm.invalid" type="submit">Change password</button>
 </form>
+
+<h3>User Statistics</h3>
+<div style="display: flex; flex-direction: row;">
+    <div style="display: flex; flex: 0 0 1; flex-direction: column;">
+        <h4>Permissions</h4>
+        @for (permission of permissions; track permission.permissionValue) {
+            <div [ngClass]="hasPermission(permission.permissionValue) ? 'has-permission' : 'no-permission'">{{permission.roleName}}</div>
+        }
+    </div>
+    <div style="display: flex; flex: 0 0 1; flex-direction: column; margin: 5px;">
+        <h4>Forum activity</h4>
+        <div style="display: flex; flex-direction: row; align-items: center;">
+            <div style="margin: 0;">Number of topics:</div>
+            <div style="font-weight: 600; margin:0px 5px;">{{numberOfTopics()}}</div>
+        </div>
+        <div style="display: flex; flex-direction: row; align-items: center;">
+            <div style="margin: 0;">Number of comments:</div>
+            <div style="font-weight: 600; margin: 0px 5px;">{{numberOfComments()}}</div>
+        </div>
+    </div>
+</div>

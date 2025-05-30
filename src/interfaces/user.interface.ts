@@ -1,7 +1,5 @@
-export interface IUser {
-    id: number;
-    name: string;
+import { IVisibleUserData } from "./visible-user-data.interface";
+
+export interface IUser extends IVisibleUserData {
     password: string;
-    email: string;
-    role: number;
 }

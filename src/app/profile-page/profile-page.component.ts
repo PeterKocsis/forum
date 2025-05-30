@@ -1,4 +1,11 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { IUser } from '../../interfaces/user.interface';
 import { CommonModule } from '@angular/common';
@@ -9,6 +16,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { RolesService } from '../../services/roles.service';
+import { permissions } from '../values/permissions';
+import { TopicsService } from '../../services/topics.service';
 
 function valuesAreEqual(controlName1: string, controlName2: string) {
   return (control: AbstractControl) => {
@@ -30,9 +40,42 @@ function valuesAreEqual(controlName1: string, controlName2: string) {
 })
 export class ProfilePageComponent {
   private usersService = inject(UsersService);
+  private rolesService = inject(RolesService);
+  private topicsService = inject(TopicsService);
+
   user = input.required<IUser>();
   userDataChangeError = signal<string>('');
   userPasswordChangeError = signal<string>('');
+  permissions = permissions;
+
+  role = computed(() => {
+    return this.rolesService
+      .rolesData()
+      .find((role) => role.id === this.user().role);
+  });
+
+  numberOfTopics = computed(() => {
+    return this.topicsService
+      .topicsData()
+      .filter((topic) => topic.author.id === this.user().id).length;
+  });
+
+  numberOfComments = computed(() => {
+    let count = 0;
+    this.topicsService.getTopicsWithFlattenedComments().forEach((topic) => {
+      count += topic.comments.filter(
+        (comment) => comment.comment.author.id === this.user().id
+      ).length;
+    });
+    return count;
+  });
+
+  hasPermission(permission: number): boolean {
+    if (this.role() === undefined) return false;
+    else {
+      return !!(this.role()!.rights & permission);
+    }
+  }
 
   constructor() {
     effect(() => {

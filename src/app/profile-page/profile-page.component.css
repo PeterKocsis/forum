@@ -1,4 +1,12 @@
 .invalid-input {
     background-color: #faa;
     border: #c0a solid 1px;
-} 
+}
+
+.has-permission {
+    background-color: greenyellow;
+}
+
+.no-permission {
+    background-color: red;
+}
