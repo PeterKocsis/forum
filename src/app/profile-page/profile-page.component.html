@@ -1,0 +1,41 @@
+<h2>Profile Page</h2>
+<form [formGroup]="userDataForm" (ngSubmit)="onUserDataChanges()">
+    <h3>Change user data</h3>
+    <div>
+        <label for="name">Name</label>
+        <input [ngClass]="userNameIsInvalid ? 'invalid-input' : ''" id="name" formControlName="name" type="text">
+    </div>
+    @if (userNameIsInvalid) {
+    <p>User name in invalid. It should be at least 5 character long!</p>
+    }
+    <div>
+        <label for="email">Email</label>
+        <input [ngClass]="emailIsInvalid ? 'invalid-input' : ''" id="email" formControlName="email" type="email">
+    </div>
+    @if (emailIsInvalid) {
+    <p>Should enter a valid email address!</p>
+    }
+    <button [disabled]="userDataForm.invalid && userDataForm.dirty" type="submit">Save changes</button>
+</form>
+@if (userDataChangeError()) {
+    <p>{{userDataChangeError()}}</p>
+}
+
+<form [formGroup]="changePasswordForm" (ngSubmit)="onPasswordChange()">
+    <h3>Change Password</h3>
+    <div>
+        <label for="password"> Password
+        </label>
+        <input [ngClass]="passwordsIsInvalid ? 'invalid-input' : ''" id="password" formControlName="password"
+            type="password">
+    </div>
+    <div>
+        <label for="confirmPassword"> Reenter password
+        </label>
+        <input [ngClass]="passwordsIsInvalid ? 'invalid-input' : ''" id="confirmPassword" formControlName="confirmPassword" type="password">
+    </div>
+    @if (passwordsIsInvalid) {
+    <p>Password should contain at least 1 digit 1 lower case and 1 upper case letter. The passwords also should match!</p>
+    }
+    <button [disabled]="changePasswordForm.dirty && changePasswordForm.invalid" type="submit">Change password</button>
+</form>
