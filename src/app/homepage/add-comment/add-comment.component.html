@@ -1,0 +1,11 @@
+<div style="border: 1px solid #caa; padding: 10px;">
+    <h5 style="margin:5px 0px;">New Comment</h5>
+    <form [formGroup]="form" (ngSubmit)="onSave()">
+        <textarea formControlName="commentContent" style="width: 100%; min-height: 150px;" name="" id=""></textarea>
+        <div style="display: flex; flex-direction: row; justify-content: end;">
+            <button type="button" (click)="onCancel()">Cancel</button>
+            <button [disabled]="form.invalid" type="submit">Save</button>
+        </div>
+
+    </form>
+</div>

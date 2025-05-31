@@ -19,6 +19,8 @@ import {
 import { RolesService } from '../../services/roles.service';
 import { permissions } from '../values/permissions';
 import { TopicsService } from '../../services/topics.service';
+import { LoggedinUserProviderService } from '../../services/loggedin-user-provider.service';
+import { IComment } from '../../interfaces/comment.interface';
 
 function valuesAreEqual(controlName1: string, controlName2: string) {
   return (control: AbstractControl) => {
@@ -42,8 +44,9 @@ export class ProfilePageComponent {
   private usersService = inject(UsersService);
   private rolesService = inject(RolesService);
   private topicsService = inject(TopicsService);
+  private loggedinUserProviderService = inject(LoggedinUserProviderService);
 
-  user = input.required<IUser>();
+  user = this.loggedinUserProviderService.currentUser;
   userDataChangeError = signal<string>('');
   userPasswordChangeError = signal<string>('');
   permissions = permissions;
@@ -51,24 +54,52 @@ export class ProfilePageComponent {
   role = computed(() => {
     return this.rolesService
       .rolesData()
-      .find((role) => role.id === this.user().role);
+      .find((role) => role.id === this.user()?.role);
   });
 
   numberOfTopics = computed(() => {
     return this.topicsService
       .topicsData()
-      .filter((topic) => topic.author.id === this.user().id).length;
+      .filter((topic) => topic.author.id === this.user()?.id).length;
   });
 
   numberOfComments = computed(() => {
     let count = 0;
-    this.topicsService.getTopicsWithFlattenedComments().forEach((topic) => {
-      count += topic.comments.filter(
-        (comment) => comment.comment.author.id === this.user().id
-      ).length;
+    this.topicsService.topicsData().forEach((topic) => {
+      topic.comments.forEach((comment) => {
+        if (comment.author.id === this.user()?.id) {
+          count++;
+        }
+        if (comment.comments && comment.comments.length > 0) {
+          count += this.countNestedComments(comment.comments);
+        }
+      });
     });
     return count;
   });
+
+  countNestedComments(comments: IComment[]): number {
+    let count = 0;
+    for (const comment of comments) {
+      if (comment.author.id === this.user()?.id) {
+        count++;
+      }
+      if (comment.comments && comment.comments.length > 0) {
+        count += this.countNestedComments(comment.comments);
+      }
+    }
+    return count;
+  }
+
+  // numberOfComments = computed(() => {
+  //   let count = 0;
+  //   this.topicsService.getTopicsWithFlattenedComments().forEach((topic) => {
+  //     count += topic.comments.filter(
+  //       (comment) => comment.comment.author.id === this.user()?.id
+  //     ).length;
+  //   });
+  //   return count;
+  // });
 
   hasPermission(permission: number): boolean {
     if (this.role() === undefined) return false;
@@ -122,7 +153,7 @@ export class ProfilePageComponent {
   onUserDataChanges() {
     if (this.userDataForm.valid) {
       const modifiedUserData: IUser = {
-        ...this.user(),
+        ...this.user()!,
         email: this.userDataForm.controls.email.value!,
         name: this.userDataForm.controls.name.value!,
       };
@@ -158,7 +189,7 @@ export class ProfilePageComponent {
   onPasswordChange() {
     if (this.changePasswordForm.valid) {
       this.usersService
-        .updateUserPassword(this.user().id, {
+        .updateUserPassword(this.user()!.id, {
           password1: this.changePasswordForm.controls.password.value!,
           password2: this.changePasswordForm.controls.confirmPassword.value!,
         })

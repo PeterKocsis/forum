@@ -1,0 +1,6 @@
+<div>
+    <div>{{comment().body}}</div>
+    @for (relatedComment of comment().comments; track $index) {
+        <app-comment style="display: block; margin-left: 2rem;" [comment]="relatedComment"></app-comment>
+    }
+</div>

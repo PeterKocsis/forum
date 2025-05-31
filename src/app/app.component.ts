@@ -5,10 +5,12 @@ import { UsersService } from '../services/users.service';
 import { Subscription } from 'rxjs';
 import { RolesService } from '../services/roles.service';
 import { TopicsService } from '../services/topics.service';
+import { HomepageComponent } from './homepage/homepage.component';
+import { LoggedinUserProviderService } from '../services/loggedin-user-provider.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ProfilePageComponent],
+  imports: [RouterOutlet, ProfilePageComponent, HomepageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -17,18 +19,15 @@ export class AppComponent implements OnInit, OnDestroy {
   private usersService = inject(UsersService);
   private rolesService = inject(RolesService);
   private topicService = inject(TopicsService);
-
-  private users = this.usersService.usersData;
+  private loggedinUserProviderService = inject(LoggedinUserProviderService);
+  
+  users = this.usersService.usersData;
   private usersSub : Subscription | undefined = undefined;
   fetchError = signal<string>('');
-
   
-  selectedUser = computed(()=>{
-    const numberOfUser = this.users().length;
-    if (numberOfUser === 0) return undefined;
-    // return this.users()[Math.floor(Math.random() * numberOfUser)];
-    return this.users()[2];
-  });
+  onUserSelect(event: any) {
+    this.loggedinUserProviderService.setCurrentUser(Number.parseInt(event.target.value));
+  }
   
   ngOnInit(): void {
     this.usersSub =  this.usersService.getUsers().subscribe({

@@ -1,5 +1,12 @@
-@if (!selectedUser() && fetchError()) {
-  <h3>{{fetchError()}}</h3>
-} @else {
-  <app-profile-page [user]="selectedUser()!"></app-profile-page>
-}
+<div style="display: flex; flex-direction: row; justify-content: space-between;">
+  <h1>Dynata Forum</h1>
+  <label for="users">Emulate User</label>
+  <select name="users" id="users" (change)="onUserSelect($event)">
+    @for (user of users(); track $index) {
+    <option value="{{user.id}}">{{user.name}}</option>
+    }
+  </select>
+</div>
+
+<app-profile-page></app-profile-page>
+<app-homepage></app-homepage>

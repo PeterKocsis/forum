@@ -8,3 +8,11 @@ export interface ITopic {
     body: string,
     comments: IComment[]
 }
+
+export interface ITopicWithFlattenedComments {
+    id: number,
+    author: IVisibleUserData,
+    title: string,
+    body: string,
+    comments: {depth: number, comment: IComment}[]
+}

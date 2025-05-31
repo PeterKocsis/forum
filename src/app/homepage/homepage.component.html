@@ -1,0 +1,10 @@
+<div style="max-height: 500px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid #caa;">
+    @for (topic of topics(); track topic.id) {
+        <app-topic style="width: 800px;" [topic]="topic"></app-topic>
+    }
+    <!-- Display existing list of topics -->
+</div>
+<!-- Display add topic component -->
+<div>
+
+</div>

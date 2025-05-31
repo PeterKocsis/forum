@@ -1,0 +1,34 @@
+<div style="border: #aaa solid 1px; padding: 5px;">
+    <details>
+        <summary
+            style="cursor: pointer; font-weight: bold; display: flex; flex-direction: row; justify-content: space-between;">
+            <div>{{topic().title}}</div>
+            <button style="margin-left: auto;" (click)="onDeleteTopic()">Delete Topic</button>
+        </summary>
+        <div style="display: flex; flex-direction: row;">
+            <div style="width: 90%;">{{topic().body}}</div>
+            <div style="display: flex; flex-direction: column;width: 10%; align-items: flex-end;">
+                <div style="display: flex; flex-direction: row;">
+                    <div>{{topic().author.name}}</div>
+                </div>
+                <div style="display: flex; flex-direction: row;">
+                    <div>{{topic().author.email}}</div>
+                </div>
+            </div>
+
+        </div>
+        <div style="display: flex; flex-direction: row;">
+            <button style="margin-left: auto;" (click)="onAddComment()">Add Comment</button>
+        </div>
+        @if (topic().comments.length > 0 || showAddComment()) {
+        <hr style="border: solid 1px #aaa;">
+        <h4 style="margin: 0px;">Comments</h4>
+        @if (showAddComment()) {
+        <app-add-comment></app-add-comment>
+        }
+        @for (comment of topic().comments; track $index) {
+        <app-comment style="display: block; margin-left: 2rem;" [comment]="comment"></app-comment>
+        }
+        }
+    </details>
+</div>
