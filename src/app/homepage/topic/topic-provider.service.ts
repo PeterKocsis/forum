@@ -12,11 +12,11 @@ export class TopicProviderService {
     this._topicId = value;
   }
 
-  private _showAddComment = signal<boolean>(false);
-  showAddComment = this._showAddComment.asReadonly();
-  setShowAddComment(value: boolean): void {
-    this._showAddComment.set(value);
-  }
+  // private _showAddComment = signal<boolean>(false);
+  // showAddComment = this._showAddComment.asReadonly();
+  // setShowAddComment(value: boolean): void {
+  //   this._showAddComment.set(value);
+  // }
 
   constructor() { }
 }

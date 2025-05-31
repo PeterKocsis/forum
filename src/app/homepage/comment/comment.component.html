@@ -1,6 +1,32 @@
-<div>
-    <div>{{comment().body}}</div>
-    @for (relatedComment of comment().comments; track $index) {
-        <app-comment style="display: block; margin-left: 2rem;" [comment]="relatedComment"></app-comment>
+@if (!comment().removed) {
+    <div style="border: 1px solid #caa; padding: 10px; margin-bottom: 1rem; border-radius: 5px;">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 1rem;">
+            <div>
+                <div>{{`${comment().author.name} says: `}}</div>
+                <div>{{comment().body}}</div>
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <button (click)="onDeleteComment()" style="margin-top: 0.5rem;">Delete Comment</button>
+                    <button (click)="onReact()" style="margin-top: 0.5rem;">React</button>
+                </div>
+            </div>
+        </div>
+        @for (relatedComment of comment().comments; track $index) {
+        <app-comment [topicId]="topicId()" style="display: block; margin-left: 2rem; margin-top: 2rem;" [comment]="relatedComment"></app-comment>
+        }
+    </div>
+    @if (showAddComment) {
+        <div style="margin-left: 2rem; margin-bottom: 1rem;">
+            <app-add-comment [commentId]="comment().id" [author]="user()!" [topicId]="topicId()!" (finished)="showAddComment = false"></app-add-comment>
+        </div>
     }
-</div>
+} @else {
+    <div style="border: 1px solid #caa; padding: 10px; margin-bottom: 1rem; border-radius: 5px; background-color: #f8d7da;">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 1rem;">
+            <div>
+                <div>{{`${comment().author.name} has removed their comment.`}}</div>
+            </div>
+        </div>
+    </div>
+}

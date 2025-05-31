@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { IUser } from '../interfaces/user.interface';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { IVisibleUserData } from '../interfaces/visible-user-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,7 @@ export class UsersService {
       );
   }
 
-  updateUserData(modifiedUserData: IUser): Observable<IUser> {
+  updateUserData(modifiedUserData: IVisibleUserData): Observable<IUser> {
     return this.http
       .put<{ data: IUser; messeage: string; status: number }>(
         `http://localhost:8888/api/user/${modifiedUserData.id}`,

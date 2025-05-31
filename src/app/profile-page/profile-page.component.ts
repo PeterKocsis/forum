@@ -21,6 +21,7 @@ import { permissions } from '../values/permissions';
 import { TopicsService } from '../../services/topics.service';
 import { LoggedinUserProviderService } from '../../services/loggedin-user-provider.service';
 import { IComment } from '../../interfaces/comment.interface';
+import { IVisibleUserData } from '../../interfaces/visible-user-data.interface';
 
 function valuesAreEqual(controlName1: string, controlName2: string) {
   return (control: AbstractControl) => {
@@ -152,7 +153,7 @@ export class ProfilePageComponent {
 
   onUserDataChanges() {
     if (this.userDataForm.valid) {
-      const modifiedUserData: IUser = {
+      const modifiedUserData: IVisibleUserData = {
         ...this.user()!,
         email: this.userDataForm.controls.email.value!,
         name: this.userDataForm.controls.name.value!,

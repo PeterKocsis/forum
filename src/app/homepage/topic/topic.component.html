@@ -20,14 +20,14 @@
         <div style="display: flex; flex-direction: row;">
             <button style="margin-left: auto;" (click)="onAddComment()">Add Comment</button>
         </div>
-        @if (topic().comments.length > 0 || showAddComment()) {
+        @if (topic().comments.length > 0 || showAddComment) {
         <hr style="border: solid 1px #aaa;">
         <h4 style="margin: 0px;">Comments</h4>
-        @if (showAddComment()) {
-        <app-add-comment></app-add-comment>
+        @if (showAddComment) {
+        <app-add-comment [author]="user()!" [topicId]="topic().id"  (finished)="showAddComment = false"></app-add-comment>
         }
         @for (comment of topic().comments; track $index) {
-        <app-comment style="display: block; margin-left: 2rem;" [comment]="comment"></app-comment>
+        <app-comment style="display: block; margin-left: 2rem;" [topicId]="topic().id" [comment]="comment"></app-comment>
         }
         }
     </details>

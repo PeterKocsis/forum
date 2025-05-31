@@ -2,6 +2,7 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 import { UsersService } from './users.service';
 import { single } from 'rxjs';
 import { IUser } from '../interfaces/user.interface';
+import { IVisibleUserData } from '../interfaces/visible-user-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +10,15 @@ import { IUser } from '../interfaces/user.interface';
 export class LoggedinUserProviderService {
   usersService = inject(UsersService);
 
-  currentUser = signal<IUser | null>(null);
+  currentUser = signal<IVisibleUserData | null>(null);
 
   setCurrentUser(userId: number): void {
     const selectedUser = this.usersService
       .usersData()
       .find((user) => user.id === userId);
     if (selectedUser) {
-      this.currentUser.set(selectedUser);
+      const { password, ...rest } = selectedUser; // Exclude password
+      this.currentUser.set(rest);
     } else {
       this.currentUser.set(null);
     }

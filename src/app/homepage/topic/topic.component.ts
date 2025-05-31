@@ -4,6 +4,7 @@ import { CommentComponent } from '../comment/comment.component';
 import { TopicsService } from '../../../services/topics.service';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
 import { TopicProviderService } from './topic-provider.service';
+import { LoggedinUserProviderService } from '../../../services/loggedin-user-provider.service';
 
 @Component({
   selector: 'app-topic',
@@ -16,7 +17,9 @@ export class TopicComponent {
   topic = input.required<ITopic>();
   topicsService = inject(TopicsService);
   topicProviderService = inject(TopicProviderService);
-  showAddComment = this.topicProviderService.showAddComment;
+  loggedinUserProviderService = inject(LoggedinUserProviderService);
+  user = this.loggedinUserProviderService.currentUser;
+  showAddComment = false;
 
   constructor() {
     effect(() => {
@@ -25,7 +28,7 @@ export class TopicComponent {
   }
 
   onAddComment() {
-    this.topicProviderService.setShowAddComment(true);
+    this.showAddComment = true;
   }
   onDeleteTopic() {
     this.topicsService.deleteTopic(this.topic().id).subscribe({

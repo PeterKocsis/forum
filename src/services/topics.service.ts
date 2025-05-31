@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { ITopic } from '../interfaces/topic.interface';
-import { catchError, map, Observable, pipe, tap, throwError } from 'rxjs';
+import { catchError, find, map, Observable, pipe, tap, throwError } from 'rxjs';
 import { IComment } from '../interfaces/comment.interface';
-import { IUser } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +13,43 @@ export class TopicsService {
   private http = inject(HttpClient);
   private topics = signal<ITopic[]>([]);
   topicsData = this.topics.asReadonly();
-
+  
   constructor() {}
+
+  addCommentToComment(topicId: number, parentCommentId: number,  comment: IComment) {
+    return this.http
+      .post<{
+        data: IComment;
+        message: string;
+        status: number;
+      }>(`${this.baseUrl}/${topicId}/comment/${parentCommentId}/add`, { body: comment.body, author: comment.author })
+      .pipe(
+        map((response) => response.data),
+        tap((comment) => {
+          const updatedTopics = this.topicsData().map((topic) => {
+            if (topic.id === topicId) {
+              const parentComment = this.findCommentById(topic.comments, parentCommentId);
+            if (parentComment) {
+              parentComment.comments = [...parentComment.comments, comment];
+            }
+              return {
+                ...topic,
+                comments: [comment, ...topic.comments],
+              };
+            }
+            return topic;
+          });
+          this.topics.set(updatedTopics);
+        }),
+        catchError((errorResponse) => {
+          console.error('Error adding comment:', errorResponse);
+          return throwError(
+            () => new Error('Unable to add comment. Please try again.')
+          );
+        })
+      );
+    
+  }
 
   addCommentToTopic(topicId: number, comment: IComment): Observable<IComment> {
     return this.http
@@ -72,5 +106,36 @@ export class TopicsService {
         this.topics.set(updatedTopics);
       })
     );
+  }
+
+  deleteComment(topicId: number, commentId: number): Observable<any> {
+    return this.http.delete<{message: string}>(`${this.baseUrl}/${topicId}/comment/${commentId}`).pipe(
+      tap((response) => {
+        console.log('Comment deleted successfully:', response);
+        const updatedTopics = this.topicsData().map((topic) => {
+          if (topic.id === topicId) {
+            const targetComment = this.findCommentById(topic.comments, commentId);
+            if(targetComment) {
+              targetComment.removed = true;
+            }
+          }
+          return {...topic};
+        });
+        this.topics.set(updatedTopics);
+      })
+    );
+  }
+
+  findCommentById(comments: IComment[], commentId: number): IComment | undefined {
+    for (const comment of comments) {
+      if (comment.id === commentId) {
+        return comment;
+      }
+      const foundComment = this.findCommentById(comment.comments, commentId);
+      if (foundComment) {
+        return foundComment;
+      }
+    }
+    return undefined;
   }
 }

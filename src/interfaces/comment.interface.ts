@@ -4,5 +4,6 @@ export interface IComment {
   id: number;
   author: IVisibleUserData;
   body: string;
-  comments: [];
+  comments: IComment[];
+  removed?: boolean;
 }
