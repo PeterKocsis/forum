@@ -1,4 +1,5 @@
-<div style="max-height: 500px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid #caa;">
+<h2>Topics</h2>
+<div style="height: 80%; overflow-y: auto; margin-bottom: 1rem; border: 1px solid #caa;">
     @for (topic of topics(); track topic.id) {
         <app-topic style="width: 800px;" [topic]="topic"></app-topic>
     }

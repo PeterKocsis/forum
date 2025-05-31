@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { UsersService } from '../services/users.service';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { LoggedinUserProviderService } from '../services/loggedin-user-provider.
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ProfilePageComponent, HomepageComponent],
+  imports: [RouterOutlet, ProfilePageComponent, HomepageComponent, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -10,5 +10,13 @@
   </div>
 </div>
 
-<app-profile-page></app-profile-page>
-<app-homepage></app-homepage>
+<div style="display: flex; flex-direction: row;">
+  <div style="display: flex; flex-direction: column; margin: 0rem 1rem">
+    <h2>Pages</h2>
+      <a routerLink="/homepage" routerLinkActive="selected">Topics</a>
+      <a routerLink="/profile" routerLinkActive="selected">Profile</a>
+  </div>
+  <router-outlet>
+
+  </router-outlet>
+</div>

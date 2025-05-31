@@ -3,11 +3,9 @@ import {
   computed,
   effect,
   inject,
-  input,
   signal,
 } from '@angular/core';
 import { UsersService } from '../../services/users.service';
-import { IUser } from '../../interfaces/user.interface';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
