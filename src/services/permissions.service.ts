@@ -34,6 +34,17 @@ export class PermissionsService {
     });
   }
 
+  canAddTopic() {
+    return computed((): boolean => {
+      const userRole = this.roleService.rolesData().find((role) => {
+        return role.id === this.user()?.role;
+      });
+      if (userRole === undefined) return false;
+      const hasRight = !!(userRole?.rights & 4); // Assuming 4 is the bitmask for add topic rights
+      return hasRight;
+    });
+  }
+
   canComment() {
     return computed((): boolean => {
       const userRole = this.roleService.rolesData().find((role) => {

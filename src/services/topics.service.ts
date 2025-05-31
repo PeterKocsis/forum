@@ -15,6 +15,27 @@ export class TopicsService {
   topicsData = this.topics.asReadonly();
   
   constructor() {}
+  
+  addTopic(newTopic: ITopic) {
+    return this.http
+      .post<{
+        data: ITopic;
+        message: string;
+        status: number;
+      }>(`${this.baseUrl}/add`, newTopic)
+      .pipe(
+        map((response) => response.data),
+        tap((topic) => {
+          this.topics.set([topic, ...this.topicsData()]);
+        }),
+        catchError((errorResponse) => {
+          console.error('Error adding topic:', errorResponse);
+          return throwError(
+            () => new Error('Unable to add topic. Please try again.')
+          );
+        })
+      );
+  }
 
   addCommentToComment(topicId: number, parentCommentId: number,  comment: IComment) {
     return this.http

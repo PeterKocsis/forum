@@ -43,35 +43,4 @@ export class TopicComponent {
       });
     }
   }
-
-  // canDeleteTopic = computed((): boolean => {
-  //   const userRole = this.roleService.rolesData().find((role) => {
-  //     return role.id === this.user()?.role;
-  //   })
-  //   if(userRole === undefined) return false;
-  //   const hasRight = !!(userRole?.rights & 4); // Assuming 4 is the bitmask for delete rights
-  //   const isAdmin = userRole.rights === 15;
-  //   const isAuthor = this.topic()?.author.id === this.user()?.id;
-  //   return isAdmin || (hasRight && isAuthor);
-  // });
-
-  // canComment = computed((): boolean => {
-  //   const userRole = this.roleService.rolesData().find((role) => {
-  //     return role.id === this.user()?.role;
-  //   });
-  //   if (userRole === undefined) return false;
-  //   const hasRight = !!(userRole?.rights & 2); // Assuming 2 is the bitmask for comment rights
-  //   return hasRight;
-  // });
-
-  // canDeleteComment = computed((): boolean => {
-  //   const userRole = this.roleService.rolesData().find((role) => {
-  //     return role.id === this.user()?.role;
-  //   });
-  //   if (userRole === undefined) return false;
-  //   const hasRight = !!(userRole?.rights & 2); // Assuming 4 is the bitmask for delete rights
-  //   const isAdmin = userRole.rights === 15;
-  //   const isAuthor = this.topic()?.author.id === this.user()?.id;
-  //   return isAdmin || (isAuthor && hasRight);
-  // });
 }

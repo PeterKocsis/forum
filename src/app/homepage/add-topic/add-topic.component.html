@@ -1,0 +1,11 @@
+<div style="border: 1px solid #caa; padding: 10px;">
+    <h4 style="margin:5px 0px;">New Topic</h4>
+    <form [formGroup]="form" (ngSubmit)="onCreateTopic()">
+        <input type="text" formControlName="title" placeholder="Title" style="width: 100%; margin-bottom: 10px;" />
+        <textarea formControlName="description" style="width: 100%; min-height: 150px;" name="" id=""></textarea>
+        <div style="display: flex; flex-direction: row; justify-content: end;">
+            <button type="button" (click)="onReset()">Reset</button>
+            <button [disabled]="form.invalid" type="submit">Create Topic</button>
+        </div>
+    </form>
+</div>
