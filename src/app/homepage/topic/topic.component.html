@@ -3,7 +3,9 @@
         <summary
             style="cursor: pointer; font-weight: bold; display: flex; flex-direction: row; justify-content: space-between;">
             <div>{{topic().title}}</div>
-            <button style="margin-left: auto;" (click)="onDeleteTopic()">Delete Topic</button>
+            @if (canDeleteTopic()) {
+                <button style="margin-left: auto;" (click)="onDeleteTopic()">Delete Topic</button>
+            }
         </summary>
         <div style="display: flex; flex-direction: row;">
             <div style="width: 90%;">{{topic().body}}</div>
@@ -18,7 +20,9 @@
 
         </div>
         <div style="display: flex; flex-direction: row;">
-            <button style="margin-left: auto;" (click)="onAddComment()">Add Comment</button>
+            @if (canComment()) {
+                <button style="margin-left: auto;" (click)="onAddComment()">Comment</button>
+            }
         </div>
         @if (topic().comments.length > 0 || showAddComment) {
         <hr style="border: solid 1px #aaa;">
