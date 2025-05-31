@@ -7,8 +7,12 @@
             </div>
             <div>
                 <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                    <button (click)="onDeleteComment()" style="margin-top: 0.5rem;">Delete Comment</button>
-                    <button (click)="onReact()" style="margin-top: 0.5rem;">React</button>
+                    @if (permissionService.canDeleteComment(comment())()) {
+                        <button  (click)="onDeleteComment()" style="margin-top: 0.5rem;">Delete Comment</button>
+                    }
+                    @if (permissionService.canComment()()) {
+                        <button (click)="onReact()" style="margin-top: 0.5rem;">React</button>
+                    }
                 </div>
             </div>
         </div>

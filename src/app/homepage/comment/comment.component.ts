@@ -4,6 +4,7 @@ import { TopicProviderService } from '../topic/topic-provider.service';
 import { LoggedinUserProviderService } from '../../../services/loggedin-user-provider.service';
 import { TopicsService } from '../../../services/topics.service';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
+import { PermissionsService } from '../../../services/permissions.service';
 
 @Component({
   selector: 'app-comment',
@@ -18,6 +19,7 @@ export class CommentComponent {
   private topicproviderService = inject(TopicProviderService);
   private loggedinUserProviderService = inject(LoggedinUserProviderService);
   private topicsService = inject(TopicsService);
+  permissionService = inject(PermissionsService);
   showAddComment = false;
   user = this.loggedinUserProviderService.currentUser;
 

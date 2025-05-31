@@ -3,7 +3,7 @@
         <summary
             style="cursor: pointer; font-weight: bold; display: flex; flex-direction: row; justify-content: space-between;">
             <div>{{topic().title}}</div>
-            @if (canDeleteTopic()) {
+            @if (permissionservice.canDeleteTopic(topic())()) {
                 <button style="margin-left: auto;" (click)="onDeleteTopic()">Delete Topic</button>
             }
         </summary>
@@ -20,7 +20,7 @@
 
         </div>
         <div style="display: flex; flex-direction: row;">
-            @if (canComment()) {
+            @if (permissionservice.canComment()()) {
                 <button style="margin-left: auto;" (click)="onAddComment()">Comment</button>
             }
         </div>
