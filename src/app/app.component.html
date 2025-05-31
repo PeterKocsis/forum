@@ -1,11 +1,13 @@
-<div style="display: flex; flex-direction: row; justify-content: space-between;">
-  <h1>Dynata Forum</h1>
-  <label for="users">Emulate User</label>
-  <select name="users" id="users" (change)="onUserSelect($event)">
-    @for (user of users(); track $index) {
-    <option value="{{user.id}}">{{user.name}}</option>
-    }
-  </select>
+<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+  <h1>Forum</h1>
+  <div style="display: flex; flex-direction: row; align-items: center; margin: 5px; gap: 1rem;">
+    <label for="users">Logged in User</label>
+    <select name="users" id="users" (change)="onUserSelect($event)">
+      @for (user of users(); track $index) {
+      <option value="{{user.id}}">{{user.name}}</option>
+      }
+    </select>
+  </div>
 </div>
 
 <app-profile-page></app-profile-page>
