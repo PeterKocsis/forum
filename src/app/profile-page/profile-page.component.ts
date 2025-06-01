@@ -1,10 +1,4 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -18,7 +12,7 @@ import { RolesService } from '../../services/roles.service';
 import { TopicsService } from '../../services/topics.service';
 import { LoggedinUserProviderService } from '../../services/loggedin-user-provider.service';
 import { IComment } from '../../interfaces/comment.interface';
-import { IVisibleUserData } from '../../interfaces/visible-user-data.interface';
+import { IAuthor } from '../../interfaces/author.interface';
 import { PermissionsService } from '../../services/permissions.service';
 
 function valuesAreEqual(controlName1: string, controlName2: string) {
@@ -152,7 +146,7 @@ export class ProfilePageComponent {
 
   onUserDataChanges() {
     if (this.userDataForm.valid) {
-      const modifiedUserData: IVisibleUserData = {
+      const modifiedUserData: IAuthor = {
         ...this.user()!,
         email: this.userDataForm.controls.email.value!,
         name: this.userDataForm.controls.name.value!,

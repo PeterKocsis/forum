@@ -1,8 +1,8 @@
-import { IVisibleUserData } from "./visible-user-data.interface";
+import { IAuthor } from './author.interface';
 
 export interface IComment {
   id: number;
-  author: IVisibleUserData;
+  author: IAuthor;
   body: string;
   comments: IComment[];
   removed?: boolean;

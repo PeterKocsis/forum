@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IVisibleUserData } from '../../../interfaces/visible-user-data.interface';
+import { IAuthor } from '../../../interfaces/author.interface';
 
 @Component({
   selector: 'app-add-comment',
@@ -18,7 +18,7 @@ import { IVisibleUserData } from '../../../interfaces/visible-user-data.interfac
 export class AddCommentComponent {
   topicId = input.required<number>();
   commentId = input<number>();
-  author = input.required<IVisibleUserData>();
+  author = input.required<IAuthor>();
 
   topicsService = inject(TopicsService);
   finished = output<void>();
@@ -46,24 +46,18 @@ export class AddCommentComponent {
       return;
     }
     if (this.commentId() === undefined) {
-      this.topicsService
-        .addCommentToTopic(this.topicId(), comment)
-        .subscribe({
-          error: (error: Error) => {
-            console.error('Error adding comment:', error);
-          },
-          complete: () => {
-            this.form.reset();
-            this.finished.emit();
-          },
-        });
+      this.topicsService.addCommentToTopic(this.topicId(), comment).subscribe({
+        error: (error: Error) => {
+          console.error('Error adding comment:', error);
+        },
+        complete: () => {
+          this.form.reset();
+          this.finished.emit();
+        },
+      });
     } else {
       this.topicsService
-        .addCommentToComment(
-          this.topicId(),
-          this.commentId()!,
-          comment
-        )
+        .addCommentToComment(this.topicId(), this.commentId()!, comment)
         .subscribe({
           error: (error: Error) => {
             console.error('Error adding comment to comment:', error);

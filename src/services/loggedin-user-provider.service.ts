@@ -2,7 +2,7 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 import { UsersService } from './users.service';
 import { single } from 'rxjs';
 import { IUser } from '../interfaces/user.interface';
-import { IVisibleUserData } from '../interfaces/visible-user-data.interface';
+import { IAuthor } from '../interfaces/author.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import { IVisibleUserData } from '../interfaces/visible-user-data.interface';
 export class LoggedinUserProviderService {
   usersService = inject(UsersService);
 
-  currentUser = signal<IVisibleUserData | null>(null);
+  currentUser = signal<IAuthor | null>(null);
 
   setCurrentUser(userId: number): void {
     const selectedUser = this.usersService

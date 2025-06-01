@@ -1,5 +1,5 @@
-import { IVisibleUserData } from "./visible-user-data.interface";
+import { IAuthor } from './author.interface';
 
-export interface IUser extends IVisibleUserData {
-    password: string;
+export interface IUser extends IAuthor {
+  password: string;
 }

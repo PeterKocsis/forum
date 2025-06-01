@@ -1,18 +1,18 @@
-import { IComment } from "./comment.interface"
-import { IVisibleUserData } from "./visible-user-data.interface"
+import { IComment } from './comment.interface';
+import { IAuthor } from './author.interface';
 
 export interface ITopic {
-    id: number,
-    author: IVisibleUserData,
-    title: string,
-    body: string,
-    comments: IComment[]
+  id: number;
+  author: IAuthor;
+  title: string;
+  body: string;
+  comments: IComment[];
 }
 
 export interface ITopicWithFlattenedComments {
-    id: number,
-    author: IVisibleUserData,
-    title: string,
-    body: string,
-    comments: {depth: number, comment: IComment}[]
+  id: number;
+  author: IAuthor;
+  title: string;
+  body: string;
+  comments: { depth: number; comment: IComment }[];
 }

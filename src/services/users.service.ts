@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { IUser } from '../interfaces/user.interface';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
-import { IVisibleUserData } from '../interfaces/visible-user-data.interface';
+import { IAuthor } from '../interfaces/author.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class UsersService {
       );
   }
 
-  updateUserData(modifiedUserData: IVisibleUserData): Observable<IUser> {
+  updateUserData(modifiedUserData: IAuthor): Observable<IUser> {
     return this.http
       .put<{ data: IUser; messeage: string; status: number }>(
         `http://localhost:8888/api/user/${modifiedUserData.id}`,
@@ -46,18 +46,24 @@ export class UsersService {
         catchError((errorResponse) => {
           console.log(errorResponse);
           return throwError(
-            () => new Error('Something went wrong. Unable to update user data. Please try again.')
+            () =>
+              new Error(
+                'Something went wrong. Unable to update user data. Please try again.'
+              )
           );
         })
-      )
+      );
   }
 
   updateUserPassword(
     userId: number,
     passwords: { password1: string; password2: string }
-  ) : Observable<IUser> {
+  ): Observable<IUser> {
     return this.http
-      .put<{ data: IUser; messeage: string; status: number }>(`http://localhost:8888/api/user/${userId}/password`, passwords)
+      .put<{ data: IUser; messeage: string; status: number }>(
+        `http://localhost:8888/api/user/${userId}/password`,
+        passwords
+      )
       .pipe(
         map((response) => response.data),
         tap((usersData: IUser) =>
@@ -68,9 +74,12 @@ export class UsersService {
         catchError((errorResponse) => {
           console.log(errorResponse);
           return throwError(
-            () => new Error('Something went wrong. Unable to update user data. Please try again.')
+            () =>
+              new Error(
+                'Something went wrong. Unable to update user data. Please try again.'
+              )
           );
         })
-      )
+      );
   }
 }
