@@ -13,9 +13,9 @@ export class TopicsService {
   private http = inject(HttpClient);
   private topics = signal<ITopic[]>([]);
   topicsData = this.topics.asReadonly();
-  
+
   constructor() {}
-  
+
   addTopic(newTopic: ITopic) {
     return this.http
       .post<{
@@ -37,26 +37,32 @@ export class TopicsService {
       );
   }
 
-  addCommentToComment(topicId: number, parentCommentId: number,  comment: IComment) {
+  addCommentToComment(
+    topicId: number,
+    parentCommentId: number,
+    comment: IComment
+  ) {
     return this.http
       .post<{
         data: IComment;
         message: string;
         status: number;
-      }>(`${this.baseUrl}/${topicId}/comment/${parentCommentId}/add`, { body: comment.body, author: comment.author })
+      }>(`${this.baseUrl}/${topicId}/comment/${parentCommentId}/add`, {
+        body: comment.body,
+        author: comment.author,
+      })
       .pipe(
         map((response) => response.data),
         tap((comment) => {
           const updatedTopics = this.topicsData().map((topic) => {
             if (topic.id === topicId) {
-              const parentComment = this.findCommentById(topic.comments, parentCommentId);
-            if (parentComment) {
-              parentComment.comments = [...parentComment.comments, comment];
-            }
-              return {
-                ...topic,
-                comments: [comment, ...topic.comments],
-              };
+              const parentComment = this.findCommentById(
+                topic.comments,
+                parentCommentId
+              );
+              if (parentComment) {
+                parentComment.comments = [...parentComment.comments, comment];
+              }
             }
             return topic;
           });
@@ -69,7 +75,6 @@ export class TopicsService {
           );
         })
       );
-    
   }
 
   addCommentToTopic(topicId: number, comment: IComment): Observable<IComment> {
@@ -78,7 +83,10 @@ export class TopicsService {
         data: IComment;
         message: string;
         status: number;
-      }>(`${this.baseUrl}/${topicId}/comment/add`, { body: comment.body, author: comment.author })
+      }>(`${this.baseUrl}/${topicId}/comment/add`, {
+        body: comment.body,
+        author: comment.author,
+      })
       .pipe(
         map((response) => response.data),
         tap((comment) => {
@@ -130,24 +138,34 @@ export class TopicsService {
   }
 
   deleteComment(topicId: number, commentId: number): Observable<any> {
-    return this.http.delete<{message: string}>(`${this.baseUrl}/${topicId}/comment/${commentId}`).pipe(
-      tap((response) => {
-        console.log('Comment deleted successfully:', response);
-        const updatedTopics = this.topicsData().map((topic) => {
-          if (topic.id === topicId) {
-            const targetComment = this.findCommentById(topic.comments, commentId);
-            if(targetComment) {
-              targetComment.removed = true;
+    return this.http
+      .delete<{ message: string }>(
+        `${this.baseUrl}/${topicId}/comment/${commentId}`
+      )
+      .pipe(
+        tap((response) => {
+          console.log('Comment deleted successfully:', response);
+          const updatedTopics = this.topicsData().map((topic) => {
+            if (topic.id === topicId) {
+              const targetComment = this.findCommentById(
+                topic.comments,
+                commentId
+              );
+              if (targetComment) {
+                targetComment.removed = true;
+              }
             }
-          }
-          return {...topic};
-        });
-        this.topics.set(updatedTopics);
-      })
-    );
+            return { ...topic };
+          });
+          this.topics.set(updatedTopics);
+        })
+      );
   }
 
-  findCommentById(comments: IComment[], commentId: number): IComment | undefined {
+  findCommentById(
+    comments: IComment[],
+    commentId: number
+  ): IComment | undefined {
     for (const comment of comments) {
       if (comment.id === commentId) {
         return comment;
