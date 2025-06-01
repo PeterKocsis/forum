@@ -1,62 +1,74 @@
 <h2>Profile Page</h2>
-<form [formGroup]="userDataForm" (ngSubmit)="onUserDataChanges()">
-    <h3>Change user data</h3>
-    <div>
-        <label for="name">Name</label>
-        <input [ngClass]="userNameIsInvalid ? 'invalid-input' : ''" id="name" formControlName="name" type="text">
-    </div>
-    @if (userNameIsInvalid) {
-    <p>User name in invalid. It should be at least 5 character long!</p>
-    }
-    <div>
-        <label for="email">Email</label>
-        <input [ngClass]="emailIsInvalid ? 'invalid-input' : ''" id="email" formControlName="email" type="email">
-    </div>
-    @if (emailIsInvalid) {
-    <p>Should enter a valid email address!</p>
-    }
-    <button [disabled]="userDataForm.invalid && userDataForm.dirty" type="submit">Save changes</button>
-</form>
-@if (userDataChangeError()) {
-    <p>{{userDataChangeError()}}</p>
-}
-
-<form [formGroup]="changePasswordForm" (ngSubmit)="onPasswordChange()">
-    <h3>Change Password</h3>
-    <div>
-        <label for="password"> Password
-        </label>
-        <input [ngClass]="passwordsIsInvalid ? 'invalid-input' : ''" id="password" formControlName="password"
-            type="password">
-    </div>
-    <div>
-        <label for="confirmPassword"> Reenter password
-        </label>
-        <input [ngClass]="passwordsIsInvalid ? 'invalid-input' : ''" id="confirmPassword" formControlName="confirmPassword" type="password">
-    </div>
-    @if (passwordsIsInvalid) {
-    <p>Password should contain at least 1 digit 1 lower case and 1 upper case letter. The passwords also should match!</p>
-    }
-    <button [disabled]="changePasswordForm.dirty && changePasswordForm.invalid" type="submit">Change password</button>
-</form>
-
-<h3>User Statistics</h3>
-<div style="display: flex; flex-direction: row;">
-    <div style="display: flex; flex: 0 0 1; flex-direction: column;">
-        <h4>Permissions</h4>
-        @for (permission of permissions; track $index) {
-            <div [ngClass]="hasPermission(permission.permissionValue) ? 'has-permission' : 'no-permission'">{{permission.roleName}}</div>
-        }
-    </div>
-    <div style="display: flex; flex: 0 0 1; flex-direction: column; margin: 5px;">
-        <h4>Forum activity</h4>
-        <div style="display: flex; flex-direction: row; align-items: center;">
-            <div style="margin: 0;">Number of topics:</div>
-            <div style="font-weight: 600; margin:0px 5px;">{{numberOfTopics()}}</div>
+<div style="border: #aaa solid 1px; padding: 5px;">
+    <form [formGroup]="userDataForm" (ngSubmit)="onUserDataChanges()">
+        <h3>Change user data</h3>
+        <div class="form-row">
+            <label for="name">Name</label>
+            <input style="margin-left: auto;" [ngClass]="userNameIsInvalid ? 'invalid-input' : ''" id="name"
+                formControlName="name" type="text">
         </div>
-        <div style="display: flex; flex-direction: row; align-items: center;">
-            <div style="margin: 0;">Number of comments:</div>
-            <div style="font-weight: 600; margin: 0px 5px;">{{numberOfComments()}}</div>
+        @if (userNameIsInvalid) {
+        <p>User name in invalid. It should be at least 5 character long!</p>
+        }
+        <div class="form-row">
+            <label for="email">Email</label>
+            <input style="margin-left: auto;" [ngClass]="emailIsInvalid ? 'invalid-input' : ''" id="email"
+                formControlName="email" type="email">
+        </div>
+        @if (emailIsInvalid) {
+        <p>Should enter a valid email address!</p>
+        }
+        <div class="form-row">
+            <button style="margin-left: auto;" [disabled]="userDataForm.invalid && userDataForm.dirty" type="submit">Save changes</button>
+        </div>
+    </form>
+    @if (userDataChangeError()) {
+    <p>{{userDataChangeError()}}</p>
+    }
+
+    <form [formGroup]="changePasswordForm" (ngSubmit)="onPasswordChange()">
+        <h3>Change Password</h3>
+        <div class="form-row">
+            <label for="password"> Password </label>
+            <input style="margin-left: auto;" [ngClass]="passwordsIsInvalid ? 'invalid-input' : ''" id="password"
+                formControlName="password" type="password">
+        </div>
+        <div class="form-row">
+            <label for="confirmPassword"> Reenter password
+            </label>
+            <input style="margin-left: auto;" [ngClass]="passwordsIsInvalid ? 'invalid-input' : ''" id="confirmPassword"
+                formControlName="confirmPassword" type="password">
+        </div>
+        @if (passwordsIsInvalid) {
+        <p>Password should contain at least 1 digit 1 lower case and 1 upper case letter. The passwords also should
+            match!</p>
+        }
+        <div class="form-row">
+            <button style="margin-left: auto;" [disabled]="changePasswordForm.dirty && changePasswordForm.invalid" type="submit">Change
+                password</button>
+            
+        </div>
+    </form>
+
+    <h3>User Statistics</h3>
+    <div style="display: flex; flex-direction: row; gap: 1rem; align-items: baseline;">
+        <div style="display: flex; flex: 0 0 1; flex-direction: column;">
+            <h4>Permissions</h4>
+            @for (permission of permissions; track $index) {
+            <div [ngClass]="hasPermission(permission.permissionValue) ? 'has-permission' : 'no-permission'">
+                {{permission.roleName}}</div>
+            }
+        </div>
+        <div style="display: flex; flex: 0 0 1; flex-direction: column; margin: 5px;">
+            <h4>Forum activity</h4>
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div style="margin: 0;">Number of topics:</div>
+                <div style="font-weight: 600; margin:0px 5px;">{{numberOfTopics()}}</div>
+            </div>
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div style="margin: 0;">Number of comments:</div>
+                <div style="font-weight: 600; margin: 0px 5px;">{{numberOfComments()}}</div>
+            </div>
         </div>
     </div>
 </div>

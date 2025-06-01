@@ -1,8 +1,6 @@
 import { Component, inject, input, output } from '@angular/core';
 import { TopicsService } from '../../../services/topics.service';
-import { TopicProviderService } from '../topic/topic-provider.service';
 import { IComment } from '../../../interfaces/comment.interface';
-import { LoggedinUserProviderService } from '../../../services/loggedin-user-provider.service';
 import {
   FormControl,
   FormGroup,
@@ -23,8 +21,6 @@ export class AddCommentComponent {
   author = input.required<IVisibleUserData>();
 
   topicsService = inject(TopicsService);
-  // topicProviderService = inject(TopicProviderService);
-  // loggedinUserProviderService = inject(LoggedinUserProviderService);
   finished = output<void>();
 
   form = new FormGroup({
