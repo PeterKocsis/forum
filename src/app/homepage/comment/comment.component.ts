@@ -1,6 +1,5 @@
 import { Component, inject, input } from '@angular/core';
 import { IComment } from '../../../interfaces/comment.interface';
-import { TopicProviderService } from '../topic/topic-provider.service';
 import { LoggedinUserProviderService } from '../../../services/loggedin-user-provider.service';
 import { TopicsService } from '../../../services/topics.service';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
@@ -16,7 +15,6 @@ export class CommentComponent {
   topicId = input.required<number>();
   comment = input.required<IComment>();
 
-  private topicproviderService = inject(TopicProviderService);
   private loggedinUserProviderService = inject(LoggedinUserProviderService);
   private topicsService = inject(TopicsService);
   permissionService = inject(PermissionsService);

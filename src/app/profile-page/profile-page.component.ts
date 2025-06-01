@@ -15,11 +15,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { RolesService } from '../../services/roles.service';
-import { permissions } from '../values/permissions';
 import { TopicsService } from '../../services/topics.service';
 import { LoggedinUserProviderService } from '../../services/loggedin-user-provider.service';
 import { IComment } from '../../interfaces/comment.interface';
 import { IVisibleUserData } from '../../interfaces/visible-user-data.interface';
+import { PermissionsService } from '../../services/permissions.service';
 
 function valuesAreEqual(controlName1: string, controlName2: string) {
   return (control: AbstractControl) => {
@@ -44,11 +44,12 @@ export class ProfilePageComponent {
   private rolesService = inject(RolesService);
   private topicsService = inject(TopicsService);
   private loggedinUserProviderService = inject(LoggedinUserProviderService);
+  private permissionService = inject(PermissionsService);
 
   user = this.loggedinUserProviderService.currentUser;
   userDataChangeError = signal<string>('');
   userPasswordChangeError = signal<string>('');
-  permissions = permissions;
+  permissions = this.permissionService.permissions;
 
   role = computed(() => {
     return this.rolesService

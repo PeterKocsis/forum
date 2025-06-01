@@ -3,7 +3,6 @@ import { ITopic } from '../../../interfaces/topic.interface';
 import { CommentComponent } from '../comment/comment.component';
 import { TopicsService } from '../../../services/topics.service';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
-import { TopicProviderService } from './topic-provider.service';
 import { LoggedinUserProviderService } from '../../../services/loggedin-user-provider.service';
 import { RolesService } from '../../../services/roles.service';
 import { PermissionsService } from '../../../services/permissions.service';
@@ -12,24 +11,16 @@ import { PermissionsService } from '../../../services/permissions.service';
   selector: 'app-topic',
   imports: [CommentComponent, AddCommentComponent],
   templateUrl: './topic.component.html',
-  providers: [TopicProviderService],
   styleUrl: './topic.component.css',
 })
 export class TopicComponent {
   topic = input.required<ITopic>();
   topicsService = inject(TopicsService);
-  topicProviderService = inject(TopicProviderService);
   loggedinUserProviderService = inject(LoggedinUserProviderService);
   user = this.loggedinUserProviderService.currentUser;
   permissionservice = inject(PermissionsService);
   roleService = inject(RolesService);
   showAddComment = false;
-
-  constructor() {
-    effect(() => {
-      this.topicProviderService.topicId = this.topic().id;
-    });
-  }
 
   onAddComment() {
     this.showAddComment = true;
