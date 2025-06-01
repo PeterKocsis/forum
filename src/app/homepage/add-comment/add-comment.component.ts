@@ -17,7 +17,7 @@ import { IAuthor } from '../../../interfaces/author.interface';
 })
 export class AddCommentComponent {
   topicId = input.required<number>();
-  commentId = input<number>();
+  parentCommentId = input<number>();
   author = input.required<IAuthor>();
 
   topicsService = inject(TopicsService);
@@ -33,20 +33,26 @@ export class AddCommentComponent {
   }
 
   onSave() {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.topicId() === null) {
       return;
     }
-    const comment: IComment = {
+    const newComment = this.createComment();
+
+    this.parentCommentId() ? this.addCommentToComment(newComment) : this.addCommentToTopic(newComment);
+  }
+
+  createComment(): IComment {
+    const newComment: IComment = {
       id: 0,
       author: this.author(),
       body: this.form.controls.commentContent.value!,
       comments: [],
     };
-    if (this.topicId() === null) {
-      return;
-    }
-    if (this.commentId() === undefined) {
-      this.topicsService.addCommentToTopic(this.topicId(), comment).subscribe({
+    return newComment;
+  }
+
+  private addCommentToTopic(newComment : IComment) {
+    this.topicsService.addCommentToTopic(this.topicId(), newComment).subscribe({
         error: (error: Error) => {
           console.error('Error adding comment:', error);
         },
@@ -55,9 +61,11 @@ export class AddCommentComponent {
           this.finished.emit();
         },
       });
-    } else {
-      this.topicsService
-        .addCommentToComment(this.topicId(), this.commentId()!, comment)
+  }
+
+  private addCommentToComment(newComment: IComment) {
+    this.topicsService
+        .addCommentToComment(this.topicId(), this.parentCommentId()!, newComment)
         .subscribe({
           error: (error: Error) => {
             console.error('Error adding comment to comment:', error);
@@ -67,6 +75,5 @@ export class AddCommentComponent {
             this.finished.emit();
           },
         });
-    }
   }
 }

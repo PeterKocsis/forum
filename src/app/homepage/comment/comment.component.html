@@ -22,7 +22,7 @@
     </div>
     @if (showAddComment) {
         <div style="margin-left: 2rem; margin-bottom: 1rem;">
-            <app-add-comment [commentId]="comment().id" [author]="user()!" [topicId]="topicId()!" (finished)="showAddComment = false"></app-add-comment>
+            <app-add-comment [parentCommentId]="comment().id" [author]="user()!" [topicId]="topicId()!" (finished)="showAddComment = false"></app-add-comment>
         </div>
     }
 } @else {
