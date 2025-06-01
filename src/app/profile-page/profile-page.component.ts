@@ -60,14 +60,7 @@ export class ProfilePageComponent {
   numberOfComments = computed(() => {
     let count = 0;
     this.topicsService.topicsData().forEach((topic) => {
-      topic.comments.forEach((comment) => {
-        if (comment.author.id === this.user()?.id) {
-          count++;
-        }
-        if (comment.comments && comment.comments.length > 0) {
-          count += this.countNestedComments(comment.comments);
-        }
-      });
+      count += this.countNestedComments(topic.comments);
     });
     return count;
   });
@@ -75,6 +68,7 @@ export class ProfilePageComponent {
   countNestedComments(comments: IComment[]): number {
     let count = 0;
     for (const comment of comments) {
+      if(comment.removed) continue; // Skip removed comments
       if (comment.author.id === this.user()?.id) {
         count++;
       }
@@ -84,16 +78,6 @@ export class ProfilePageComponent {
     }
     return count;
   }
-
-  // numberOfComments = computed(() => {
-  //   let count = 0;
-  //   this.topicsService.getTopicsWithFlattenedComments().forEach((topic) => {
-  //     count += topic.comments.filter(
-  //       (comment) => comment.comment.author.id === this.user()?.id
-  //     ).length;
-  //   });
-  //   return count;
-  // });
 
   hasPermission(permission: number): boolean {
     if (this.role() === undefined) return false;
