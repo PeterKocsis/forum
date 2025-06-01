@@ -12,12 +12,23 @@ export class PermissionsService {
   private roleService = inject(RolesService);
   user = this.userService.currentUser;
 
-  readonly permissions = [
-    { roleName: 'Read Comments', permissionValue: 1 },
-    { roleName: 'Add/Delete Comments', permissionValue: 2 },
-    { roleName: 'Add/Delete Topics', permissionValue: 4 },
-    { roleName: 'Delete Others Comments/Topics', permissionValue: 8 },
-  ];
+  readonly permissions = {
+    readComments: { value: 1, name: 'Read Comments' },
+    addDeleteComments: { value: 2, name: 'Add/Delete Comments' },
+    addDeleteTopics: { value: 4, name: 'Add/Delete Topics' },
+    deleteOthersCommentsTopics: {
+      value: 8,
+      name: 'Delete Others Comments/Topics',
+    },
+  };
+
+  isAdmin(userRights: number): boolean {
+    const adminRights = Object.values(this.permissions).reduce(
+      (acc, perm) => acc | perm.value,
+      0
+    );
+    return !!(userRights & adminRights)
+  }
 
   constructor() {}
 
@@ -27,8 +38,8 @@ export class PermissionsService {
         return role.id === this.user()?.role;
       });
       if (userRole === undefined) return false;
-      const hasRight = !!(userRole?.rights & 4); // Assuming 4 is the bitmask for delete rights
-      const isAdmin = userRole.rights === 15;
+      const hasRight = !!(userRole?.rights & this.permissions.addDeleteTopics.value); // Assuming 4 is the bitmask for delete rights
+      const isAdmin = this.isAdmin(userRole.rights);
       const isAuthor = topic.author.id === this.user()?.id;
       return isAdmin || (hasRight && isAuthor);
     });
@@ -40,7 +51,7 @@ export class PermissionsService {
         return role.id === this.user()?.role;
       });
       if (userRole === undefined) return false;
-      const hasRight = !!(userRole?.rights & 4); // Assuming 4 is the bitmask for add topic rights
+      const hasRight = !!(userRole?.rights & this.permissions.addDeleteTopics.value); // Assuming 4 is the bitmask for add topic rights
       return hasRight;
     });
   }
@@ -51,7 +62,7 @@ export class PermissionsService {
         return role.id === this.user()?.role;
       });
       if (userRole === undefined) return false;
-      const hasRight = !!(userRole?.rights & 2); // Assuming 2 is the bitmask for comment rights
+      const hasRight = !!(userRole?.rights & this.permissions.addDeleteComments.value); // Assuming 2 is the bitmask for comment rights
       return hasRight;
     });
   }
@@ -62,8 +73,8 @@ export class PermissionsService {
         return role.id === this.user()?.role;
       });
       if (userRole === undefined) return false;
-      const hasRight = !!(userRole?.rights & 2); // Assuming 4 is the bitmask for delete rights
-      const isAdmin = userRole.rights === 15;
+      const hasRight = !!(userRole?.rights & this.permissions.addDeleteComments.value); // Assuming 4 is the bitmask for delete rights
+      const isAdmin = this.isAdmin(userRole.rights);
       const isAuthor = comment.author.id === this.user()?.id;
       return isAdmin || (isAuthor && hasRight);
     });

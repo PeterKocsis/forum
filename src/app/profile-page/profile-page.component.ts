@@ -49,7 +49,7 @@ export class ProfilePageComponent {
   user = this.loggedinUserProviderService.currentUser;
   userDataChangeError = signal<string>('');
   userPasswordChangeError = signal<string>('');
-  permissions = this.permissionService.permissions;
+  permissions = Object.values(this.permissionService.permissions);
 
   role = computed(() => {
     return this.rolesService

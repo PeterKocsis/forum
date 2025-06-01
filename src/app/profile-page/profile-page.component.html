@@ -55,8 +55,8 @@
         <div style="display: flex; flex: 0 0 1; flex-direction: column;">
             <h4>Permissions</h4>
             @for (permission of permissions; track $index) {
-            <div [ngClass]="hasPermission(permission.permissionValue) ? 'has-permission' : 'no-permission'">
-                {{permission.roleName}}</div>
+            <div [ngClass]="hasPermission(permission.value) ? 'has-permission' : 'no-permission'">
+                {{permission.name}}</div>
             }
         </div>
         <div style="display: flex; flex: 0 0 1; flex-direction: column; margin: 5px;">
