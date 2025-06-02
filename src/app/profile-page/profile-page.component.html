@@ -1,5 +1,5 @@
 <h2>Profile Page</h2>
-<div style="border: #aaa solid 1px; padding: 5px;">
+<div style="border: #aaa solid 1px; padding: 5px; width: 400px;">
     <form [formGroup]="userDataForm" (ngSubmit)="onUserDataChanges()">
         <h3>Change user data</h3>
         <div class="form-row">
@@ -51,7 +51,7 @@
     </form>
 
     <h3>User Statistics</h3>
-    <div style="display: flex; flex-direction: row; gap: 1rem; align-items: baseline;">
+    <div style="display: flex; flex-direction: row; gap: 1rem; align-items: baseline; justify-content: space-between;">
         <div style="display: flex; flex: 0 0 1; flex-direction: column;">
             <h4>Permissions</h4>
             @for (permission of permissions; track $index) {
