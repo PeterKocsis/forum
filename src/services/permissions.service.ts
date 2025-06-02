@@ -27,7 +27,8 @@ export class PermissionsService {
       (acc, perm) => acc | perm.value,
       0
     );
-    return !!(userRights & adminRights)
+    console.log('Is admin?:',userRights & adminRights);
+    return (userRights & adminRights) === adminRights
   }
 
   constructor() {}
